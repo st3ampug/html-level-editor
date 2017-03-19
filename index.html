@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>Level Editor</title>
+
+  <script type="text/javascript" src="js/events-global.js" ></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.css"/>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/datatables.min.js"></script>
+
+</head>
+<body>
+  <header>
+    <!--
+    <nav class="navbar navbar-inverse">
+      <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img alt="Brand" src="../img/jira-logo-scaled.png"/>
+      </a>
+    </div>
+      <ul class="nav navbar-nav navbar-left extra-left-margin" id="navbarLinks">
+        <li><a href="#">Load JSON</a></li>
+        <li><a href="#">Save JSON</a></li>
+      </ul>
+    </nav>
+    -->
+  </header>
+
+  <main>
+    <div class="container" id="container">
+        <!-- Container's Top content START -->
+        <div id="top">
+            <div class="row my-extra-padding">
+                <div class="col-md-4">
+
+                </div>
+
+                <div class="col-md-4">
+                    
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#loadJsonModal" id="loadJson">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Load JSON
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#saveJsonModal" id="saveJson">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save JSON
+                    </button>
+                    <!-- MODALS MISSING FOR BOTH BUTTONS -->
+                </div>
+            </div>
+            <div class="row my-extra-padding">
+
+                <div class="col-md-4">
+                    <label for="version">Version</label>
+                        <input type="text" class="form-control" id="version" value="1.0"/>
+                    <label for="build">Build</label>
+                        <input type="text" class="form-control" id="build" value="1"/>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="levelId">ID</label>
+                        <input type="text" class="form-control" id="levelId" value="0"/>
+                    <label for="levelName">Name</label>
+                        <input type="text" class="form-control" id="levelName" placeholder="Level 1"/>
+                    <label for="levelDescription">Description</label>
+                        <input type="text" class="form-control" id="levelDescription" value="This is level 1"/>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="levelMap">Map</label>
+                        <input type="text" class="form-control" id="levelMap" placeholder="desert"/>
+                    <label for="levelSize">Size</label>
+                        <input type="text" class="form-control" id="levelId" value="4x5" disabled />
+                </div>
+
+            </div>
+        </div>
+        <!-- Container's Top content END -->
+        <!-- Container's Middle content START -->
+        <div id="middle">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <table class="table table-condensed" id="containerTable">
+                        <thead>
+                        <tr>
+                            <th class="text-center" id="headerTile0" selected="no" >Empty</th>
+                            <th class="text-center" id="headerTile1" selected="no" >1</th>
+                            <th class="text-center" id="headerTile2" selected="no" >2</th>
+                            <th class="text-center" id="headerTile3" selected="no" >3</th>
+                            <th class="text-center" id="headerTile4" selected="no" >4</th>
+                            <th class="text-center" id="headerTile5" selected="no" >5</th>
+                            <th class="text-center" id="headerTile6" selected="no" >6</th>
+                            <th class="text-center" id="headerTile7" selected="no" >7</th>
+                            <th class="text-center" id="headerTile8" selected="no" >8</th>
+                            <th class="text-center" id="headerTile9" selected="no" >9</th>
+                            <th class="text-center" id="headerTile10" selected="no" >10</th>
+                            <th class="text-center" id="headerTile11" selected="no" >11</th>
+                            <th class="text-center" id="headerTile12" selected="no" >12</th>
+                            <th class="text-center" id="headerTile13" selected="no" >13</th>
+                            <th class="text-center" id="headerTile14" selected="no" >14</th>
+                            <th class="text-center" id="headerTile15" selected="no" >15</th>
+                            <th class="text-center" id="headerTile16" selected="no" >16</th>
+                            <th class="text-center" id="headerTile17" selected="no" >17</th>
+                            <th class="text-center" id="headerTile18" selected="no" >18</th>
+                            <th class="text-center" id="headerTile19" selected="no" >19</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td id="rowTile0"><img src="img/tiles/0.png" /></td>
+                            <td id="rowTile1"><img src="img/tiles/1.png" /></td>
+                            <td id="rowTile2"><img src="img/tiles/2.png" /></td>
+                            <td id="rowTile3"><img src="img/tiles/3.png" /></td>
+                            <td id="rowTile4"><img src="img/tiles/4.png" /></td>
+                            <td id="rowTile5"><img src="img/tiles/5.png" /></td>
+                            <td id="rowTile6"><img src="img/tiles/6.png" /></td>
+                            <td id="rowTile7"><img src="img/tiles/7.png" /></td>
+                            <td id="rowTile8"><img src="img/tiles/8.png" /></td>
+                            <td id="rowTile9"><img src="img/tiles/9.png" /></td>
+                            <td id="rowTile10"><img src="img/tiles/10.png" /></td>
+                            <td id="rowTile11"><img src="img/tiles/11.png" /></td>
+                            <td id="rowTile12"><img src="img/tiles/12.png" /></td>
+                            <td id="rowTile13"><img src="img/tiles/13.png" /></td>
+                            <td id="rowTile14"><img src="img/tiles/14.png" /></td>
+                            <td id="rowTile15"><img src="img/tiles/15.png" /></td>
+                            <td id="rowTile16"><img src="img/tiles/16.png" /></td>
+                            <td id="rowTile17"><img src="img/tiles/17.png" /></td>
+                            <td id="rowTile18"><img src="img/tiles/18.png" /></td>
+                            <td id="rowTile19"><img src="img/tiles/19.png" /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Init state</h2>
+                    <table class="table table-bordered" id="initTable">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr id="initRow0">
+                            <td id="init00"><img id="initPic00" src="img/tiles/placeholder.png" /></td>
+                            <td id="init01"><img id="initPic01" src="img/tiles/placeholder.png" /></td>
+                            <td id="init02"><img id="initPic02" src="img/tiles/placeholder.png" /></td>
+                            <td id="init03"><img id="initPic03" src="img/tiles/placeholder.png" /></td>
+                            <td id="init04"><img id="initPic04" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="initRow1">
+                            <td id="init10"><img id="initPic10" src="img/tiles/placeholder.png" /></td>
+                            <td id="init11"><img id="initPic11" src="img/tiles/placeholder.png" /></td>
+                            <td id="init12"><img id="initPic12" src="img/tiles/placeholder.png" /></td>
+                            <td id="init13"><img id="initPic13" src="img/tiles/placeholder.png" /></td>
+                            <td id="init14"><img id="initPic14" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="initRow2">
+                            <td id="init20"><img id="initPic20" src="img/tiles/placeholder.png" /></td>
+                            <td id="init21"><img id="initPic21" src="img/tiles/placeholder.png" /></td>
+                            <td id="init22"><img id="initPic22" src="img/tiles/placeholder.png" /></td>
+                            <td id="init23"><img id="initPic23" src="img/tiles/placeholder.png" /></td>
+                            <td id="init24"><img id="initPic24" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="initRow3">
+                            <td id="init30"><img id="initPic30" src="img/tiles/placeholder.png" /></td>
+                            <td id="init31"><img id="initPic31" src="img/tiles/placeholder.png" /></td>
+                            <td id="init32"><img id="initPic32" src="img/tiles/placeholder.png" /></td>
+                            <td id="init33"><img id="initPic33" src="img/tiles/placeholder.png" /></td>
+                            <td id="init34"><img id="initPic34" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h2>Final state</h2>
+                    <table class="table table-bordered" id="finalTable">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr id="finalRow0">
+                            <td id="final00"><img id="finalPic00" src="img/tiles/placeholder.png" /></td>
+                            <td id="final01"><img id="finalPic01" src="img/tiles/placeholder.png" /></td>
+                            <td id="final02"><img id="finalPic02" src="img/tiles/placeholder.png" /></td>
+                            <td id="final03"><img id="finalPic03" src="img/tiles/placeholder.png" /></td>
+                            <td id="final04"><img id="finalPic04" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="finalRow1">
+                            <td id="final10"><img id="finalPic10" src="img/tiles/placeholder.png" /></td>
+                            <td id="final11"><img id="finalPic11" src="img/tiles/placeholder.png" /></td>
+                            <td id="final12"><img id="finalPic12" src="img/tiles/placeholder.png" /></td>
+                            <td id="final13"><img id="finalPic13" src="img/tiles/placeholder.png" /></td>
+                            <td id="final14"><img id="finalPic14" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="finalRow2">
+                            <td id="final20"><img id="finalPic20" src="img/tiles/placeholder.png" /></td>
+                            <td id="final21"><img id="finalPic21" src="img/tiles/placeholder.png" /></td>
+                            <td id="final22"><img id="finalPic22" src="img/tiles/placeholder.png" /></td>
+                            <td id="final23"><img id="finalPic23" src="img/tiles/placeholder.png" /></td>
+                            <td id="final24"><img id="finalPic24" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                            <tr id="finalRow3">
+                            <td id="final30"><img id="finalPic30" src="img/tiles/placeholder.png" /></td>
+                            <td id="final31"><img id="finalPic31" src="img/tiles/placeholder.png" /></td>
+                            <td id="final32"><img id="finalPic32" src="img/tiles/placeholder.png" /></td>
+                            <td id="final33"><img id="finalPic33" src="img/tiles/placeholder.png" /></td>
+                            <td id="final34"><img id="finalPic34" src="img/tiles/placeholder.png" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+                <!-- <link rel="stylesheet" href="/css/style-home.css"> -->
+                <script src="js/events-test.js" type="text/javascript"></script>
+        </div>
+        <!-- Container's Middle content END -->
+    </div>
+  </main>
+
+  <footer>
+    Balint Polgar - 2017
+
+  </footer>
+
+<!-- My events -->
+<!--<script src="js/events.js" type="text/javascript"></script>-->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</body>
+</html>

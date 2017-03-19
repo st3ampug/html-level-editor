@@ -1,0 +1,258 @@
+{
+  "header": {
+    "version": "1.0",
+    "build": "1"
+  },
+  "info": {
+    "id": 0,
+    "name": "Level 1",
+    "desc": "This is Level 1",
+    "map": "desert",
+    "size": {
+      "columns": 4,
+      "rows": 5
+    }
+  },
+  "tiles": [
+    {
+      "box_type": "number",
+      "value": 1,
+      "init_coords": {
+        "row": 0,
+        "column": 0
+      },
+      "final_coords": {
+        "row": 0,
+        "column": 0
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 2,
+      "init_coords": {
+        "row": 0,
+        "column": 1
+      },
+      "final_coords": {
+        "row": 0,
+        "column": 1
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 3,
+      "init_coords": {
+        "row": 0,
+        "column": 2
+      },
+      "final_coords": {
+        "row": 0,
+        "column": 2
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 4,
+      "init_coords": {
+        "row": 0,
+        "column": 3
+      },
+      "final_coords": {
+        "row": 0,
+        "column": 3
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 5,
+      "init_coords": {
+        "row": 1,
+        "column": 0
+      },
+      "final_coords": {
+        "row": 1,
+        "column": 0
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 6,
+      "init_coords": {
+        "row": 1,
+        "column": 1
+      },
+      "final_coords": {
+        "row": 1,
+        "column": 1
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 7,
+      "init_coords": {
+        "row": 1,
+        "column": 2
+      },
+      "final_coords": {
+        "row": 1,
+        "column": 2
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 8,
+      "init_coords": {
+        "row": 1,
+        "column": 3
+      },
+      "final_coords": {
+        "row": 1,
+        "column": 3
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 9,
+      "init_coords": {
+        "row": 2,
+        "column": 0
+      },
+      "final_coords": {
+        "row": 2,
+        "column": 0
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 10,
+      "init_coords": {
+        "row": 2,
+        "column": 1
+      },
+      "final_coords": {
+        "row": 2,
+        "column": 1
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 11,
+      "init_coords": {
+        "row": 2,
+        "column": 2
+      },
+      "final_coords": {
+        "row": 2,
+        "column": 2
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 12,
+      "init_coords": {
+        "row": 2,
+        "column": 3
+      },
+      "final_coords": {
+        "row": 2,
+        "column": 3
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 13,
+      "init_coords": {
+        "row": 3,
+        "column": 0
+      },
+      "final_coords": {
+        "row": 3,
+        "column": 0
+      }
+    },
+    {
+      "box_type": "number",
+      "value": null,
+      "init_coords": {
+        "row": 3,
+        "column": 1
+      },
+      "final_coords": {
+        "row": 4,
+        "column": 3
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 15,
+      "init_coords": {
+        "row": 3,
+        "column": 2
+      },
+      "final_coords": {
+        "row": 3,
+        "column": 2
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 16,
+      "init_coords": {
+        "row": 3,
+        "column": 3
+      },
+      "final_coords": {
+        "row": 3,
+        "column": 3
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 17,
+      "init_coords": {
+        "row": 4,
+        "column": 0
+      },
+      "final_coords": {
+        "row": 4,
+        "column": 0
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 14,
+      "init_coords": {
+        "row": 4,
+        "column": 1
+      },
+      "final_coords": {
+        "row": 3,
+        "column": 1
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 18,
+      "init_coords": {
+        "row": 4,
+        "column": 2
+      },
+      "final_coords": {
+        "row": 4,
+        "column": 1
+      }
+    },
+    {
+      "box_type": "number",
+      "value": 19,
+      "init_coords": {
+        "row": 4,
+        "column": 3
+      },
+      "final_coords": {
+        "row": 4,
+        "column": 2
+      }
+    }
+  ]
+}
