@@ -69,6 +69,9 @@ window.addEventListener('load', function(){
             console.log(coords);
         }
         
+        // to solve:
+        // clicking with a number selected that is already on a board, on a number that is already on the board
+        // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
 
         if(currentSelected.num != -1) {
             var elemnum = checkTileUsage(usedTilesInit);
