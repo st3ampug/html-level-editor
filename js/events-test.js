@@ -17,6 +17,7 @@ const PICPARTIAL = "Pic";
 
 var containerTable = document.getElementById(CONTAINERTABLE);
 var initTable = document.getElementById(INITTABLE);
+var finalTable = document.getElementById(FINALTABLE);
 
 function TileObj(num, coords) {
     if (coords === undefined) // parameter was omitted in call
@@ -55,7 +56,7 @@ window.addEventListener('load', function(){
             console.log(ev.target.id);
         }
 
-        console.log("containerTable click");
+        console.log(CONTAINERTABLE + " click");
     });
 
     initTable.addEventListener('click', function(ev) {
@@ -84,6 +85,7 @@ window.addEventListener('load', function(){
                     changeTdImgSrc(INITPARTIAL + PICPARTIAL,coords, IMGPATH + currentSelected.num + IMGEXTENSION);
                     usedTilesInit.push(new TileObj(currentSelected.num, coords));
                 } else {
+                    // next one throws undefined for elemnum, when the same number is used multiple times and you try to replace another num, INVESTIGATE
                     changeTdImgSrc(INITPARTIAL + PICPARTIAL, usedTilesInit[elemnum].coords, IMGPATH + PLACEHOLDER + IMGEXTENSION);
                     //usedTilesInit = usedTilesInit.slice(elemnum, 1);
                     spliceTileFromArray(usedTilesInit, elemnum);
@@ -95,7 +97,46 @@ window.addEventListener('load', function(){
         }
         console.log(usedTilesInit);
 
-        console.log("initTable click");
+        console.log(INITTABLE + " click");
+    });
+
+    finalTable.addEventListener('click', function(ev) {
+        var coords = [];
+        if(ev.target.tagName.toLowerCase() == "img") {
+            coords = getCoordsFromId(ev.target.parentNode.id, FiNALPARTIAL);
+            console.log(coords);
+        }
+        if(ev.target.tagName.toLowerCase() == "td") {
+            coords = getCoordsFromId(ev.target.id, FiNALPARTIAL);
+            console.log(coords);
+        }
+        
+        // to solve:
+        // clicking with a number selected that is already on a board, on a number that is already on the board
+        // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
+
+        if(currentSelected.num != -1) {
+            var elemnum = checkTileUsage(usedTilesFinal);
+
+            if(coords.length == 2) {
+                checkAndSpliceCurrentNumFromArray(usedTilesFinal, coords);
+                changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+
+                if(elemnum == -1) {
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL,coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+                    usedTilesFinal.push(new TileObj(currentSelected.num, coords));
+                } else {
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, usedTilesFinal[elemnum].coords, IMGPATH + PLACEHOLDER + IMGEXTENSION);
+                    spliceTileFromArray(usedTilesFinal, elemnum);
+
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION)
+                    usedTilesFinal.push(new TileObj(currentSelected.num, coords));
+                }
+            }
+        }
+        console.log(usedTilesFinal);
+
+        console.log(FINALTABLE + " click");
     });
 });
 
@@ -227,5 +268,16 @@ Array.prototype.equals = function (array) {
 }
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
+function constructJson() {
+    // TODO
+    // if all inputs have values
+    // if both arrays have length = 18 (1-19, x (=0) is for replacing 1 tile!)
+    // use input values for header and info partial
+    // check both arrays for numbers and the 0, use init and final array coords...
+    var output = {
+
+    }
+}
 
 // =====================================================================================
