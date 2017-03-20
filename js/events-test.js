@@ -19,18 +19,49 @@ var containerTable = document.getElementById(CONTAINERTABLE);
 var initTable = document.getElementById(INITTABLE);
 var finalTable = document.getElementById(FINALTABLE);
 
-function TileObj(num, coords) {
-    if (coords === undefined) // parameter was omitted in call
-        coords = [];
+// function TileObj(num, coords) {
+//     if (coords === undefined) // parameter was omitted in call
+//         coords = [];
 
-    this.num = num;
-    this.coords = coords;
-}
+//     this.num = num;
+//     this.coords = coords;
+// }
+
+var tileContainer = [
+    new NumObj("0", "img/tiles/0.png"),
+    new NumObj("1", "img/tiles/1.png"),
+    new NumObj("2", "img/tiles/2.png"),
+    new NumObj("3", "img/tiles/3.png"),
+    new NumObj("4", "img/tiles/4.png"),
+    new NumObj("5", "img/tiles/5.png"),
+    new NumObj("6", "img/tiles/6.png"),
+    new NumObj("7", "img/tiles/7.png"),
+    new NumObj("8", "img/tiles/8.png"),
+    new NumObj("9", "img/tiles/9.png"),
+    new NumObj("10", "img/tiles/10.png"),
+    new NumObj("11", "img/tiles/11.png"),
+    new NumObj("12", "img/tiles/12.png"),
+    new NumObj("13", "img/tiles/13.png"),
+    new NumObj("14", "img/tiles/14.png"),
+    new NumObj("15", "img/tiles/15.png"),
+    new NumObj("16", "img/tiles/16.png"),
+    new NumObj("17", "img/tiles/17.png"),
+    new NumObj("18", "img/tiles/18.png"),
+    new NumObj("19", "img/tiles/19.png"),
+];
+var initBoard = new BoardObj();
+var finalBoard = new BoardObj();
 
 var lastSelected = new TileObj(-1);
 var currentSelected = new TileObj(-1);
 var usedTilesInit = [];
 var usedTilesFinal = [];
+
+// TODO
+// redesign logic around the following:
+// selecting a number (selected and used need to be set at appropriate times, just need to loop through the array to check what the state is)
+// what happens when clicking on a table cell (current number in the cell should be easier to determine with the data set up in the new way)
+// deleting a number from it's previous cell should be easier, since the number knows which coord it is displayed at!
 
 // =====================================================================================
 
