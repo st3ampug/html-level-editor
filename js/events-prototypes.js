@@ -1,3 +1,5 @@
+// =====================================================================================
+
 function NumObj(num, imgsrc) {
     if (imgsrc === undefined) // parameter was omitted in call
         imgsrc = "img/tiles/placeholder.png";
@@ -7,6 +9,20 @@ function NumObj(num, imgsrc) {
     this.selected = false;
     this.used = [];
 }
+NumObj.prototype.select = function() {
+    this.selected = true;
+};
+NumObj.prototype.unselect = function() {
+    this.selected = false;
+};
+NumObj.prototype.use = function(coords) {
+    this.used = coords;
+};
+NumObj.prototype.unuse = function() {
+    this.used = [];
+};
+
+// =====================================================================================
 
 function TileObj(num, coords) {
     if (coords === undefined) // parameter was omitted in call
@@ -16,12 +32,30 @@ function TileObj(num, coords) {
     this.coords = coords;
 }
 
+// =====================================================================================
+
 function BoardObj() {
     this.grid = createArray(4, 5);
-    this.full = false;
-
-    // make sure to include methods for this that checks and sets the full bool!
+    this.entries = 0;
 }
+BoardObj.prototype.add = function(r, c, numObj) {
+    this.grid[r][c] = numObj;
+    this.entries = this.entries + 1;
+    // entries remain 0, INVESTIGATE
+}
+BoardObj.prototype.remove = function(r, c) {
+    this.grid[r][c] = -1;
+    this.entries = this.entries - 1;
+}
+BoardObj.prototype.checkFull = function() {
+    if(this.entries == 20) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+// =====================================================================================
 
 
 function createArray(length) {
@@ -35,3 +69,5 @@ function createArray(length) {
 
     return arr;
 }
+
+// =====================================================================================

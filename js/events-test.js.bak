@@ -72,13 +72,13 @@ window.addEventListener('load', function(){
 
     containerTable.addEventListener('click', function(ev) {
         if(ev.target.tagName.toLowerCase() == "img") {
-            var lastnum = returnCurrentSelectedNum();
-            var clickednum = returnTileNumberFromContainerClick(ev.target.parentNode.id.toString());
+            var tile = new TileObj(returnTileNumber(ev.target.parentNode.id.toString()));
 
-            selectNumberFromContainer(clickednum);
-            if(lastnum != -1)
-                modifyTh(HEADERTILEPARTIAL + lastnum);
-            modifyTh(HEADERTILEPARTIAL + clickednum);
+            // setting selection
+            setCurrentSelected(tile);
+            unSelectLast();
+            selectTh(HEADERTILEPARTIAL + tile.num);
+            setLastSelected(tile);
         }
         if(ev.target.tagName.toLowerCase() == "td") {
             console.log(ev.target.tagName.toLowerCase() + " >> " + ev.target.parentNode.id);
@@ -91,39 +91,81 @@ window.addEventListener('load', function(){
     });
 
     initTable.addEventListener('click', function(ev) {
-        var coords = getClickCoordsFromEventTarget(ev.target);
-        console.log(coords);
-
-        if(coords.length == 2) {
-            if(coords[0] != -1 && coords[1] != -1) {
-                var n = returnCurrentSelectedNum();
-                if (n != -1) {
-                    // check that the curr coords have a num
-                    if(initBoard.grid[coords[0]][coords[1]] != -1 || initBoard.grid[coords[0]][coords[1]] != undefined) {
-                        initBoard.remove(coords[0], coords[1]);
-                        changeTdImgSrc(INITPARTIAL + PICPARTIAL, coords, PLACEHOLDER + IMGEXTENSION);
-                    }
-
-                    // do this when there is no num, or it has been removed
-                    initBoard.add(coords[0], coords[1], tileContainer[n]);
-                    changeTdImgSrc(INITPARTIAL + PICPARTIAL, coords, tileContainer[n].imgsrc);
-                }
-            }
+        var coords = [];
+        if(ev.target.tagName.toLowerCase() == "img") {
+            coords = getCoordsFromId(ev.target.parentNode.id, INITPARTIAL);
+            console.log(coords);
         }
-        
+        if(ev.target.tagName.toLowerCase() == "td") {
+            coords = getCoordsFromId(ev.target.id, INITPARTIAL);
+            console.log(coords);
+        }
         
         // to solve:
         // clicking with a number selected that is already on a board, on a number that is already on the board
         // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
 
-        
+        if(currentSelected.num != -1) {
+            var elemnum = checkTileUsage(usedTilesInit);
+
+            if(coords.length == 2) {
+                checkAndSpliceCurrentNumFromArray(usedTilesInit, coords);
+                changeTdImgSrc(INITPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+
+                if(elemnum == -1) {
+                    changeTdImgSrc(INITPARTIAL + PICPARTIAL,coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+                    usedTilesInit.push(new TileObj(currentSelected.num, coords));
+                } else {
+                    // next one throws undefined for elemnum, when the same number is used multiple times and you try to replace another num, INVESTIGATE
+                    changeTdImgSrc(INITPARTIAL + PICPARTIAL, usedTilesInit[elemnum].coords, IMGPATH + PLACEHOLDER + IMGEXTENSION);
+                    //usedTilesInit = usedTilesInit.slice(elemnum, 1);
+                    spliceTileFromArray(usedTilesInit, elemnum);
+
+                    changeTdImgSrc(INITPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION)
+                    usedTilesInit.push(new TileObj(currentSelected.num, coords));
+                }
+            }
+        }
+        console.log(usedTilesInit);
 
         console.log(INITTABLE + " click");
     });
 
     finalTable.addEventListener('click', function(ev) {
-        // TODO
+        var coords = [];
+        if(ev.target.tagName.toLowerCase() == "img") {
+            coords = getCoordsFromId(ev.target.parentNode.id, FiNALPARTIAL);
+            console.log(coords);
+        }
+        if(ev.target.tagName.toLowerCase() == "td") {
+            coords = getCoordsFromId(ev.target.id, FiNALPARTIAL);
+            console.log(coords);
+        }
         
+        // to solve:
+        // clicking with a number selected that is already on a board, on a number that is already on the board
+        // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
+
+        if(currentSelected.num != -1) {
+            var elemnum = checkTileUsage(usedTilesFinal);
+
+            if(coords.length == 2) {
+                checkAndSpliceCurrentNumFromArray(usedTilesFinal, coords);
+                changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+
+                if(elemnum == -1) {
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL,coords, IMGPATH + currentSelected.num + IMGEXTENSION);
+                    usedTilesFinal.push(new TileObj(currentSelected.num, coords));
+                } else {
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, usedTilesFinal[elemnum].coords, IMGPATH + PLACEHOLDER + IMGEXTENSION);
+                    spliceTileFromArray(usedTilesFinal, elemnum);
+
+                    changeTdImgSrc(FiNALPARTIAL + PICPARTIAL, coords, IMGPATH + currentSelected.num + IMGEXTENSION)
+                    usedTilesFinal.push(new TileObj(currentSelected.num, coords));
+                }
+            }
+        }
+        console.log(usedTilesFinal);
 
         console.log(FINALTABLE + " click");
     });
@@ -173,7 +215,10 @@ function checkAndSpliceCurrentNumFromArray(objarray, coords) {
     }
 }
 
-
+function changeTdImgSrc(partialid, coords, src) {
+    var img = document.getElementById(partialid + coords[0] + coords[1]);
+    img.setAttribute("src", src);
+}
 
 function spliceTileFromArray(objarray, elemnum) {
     objarray.splice(elemnum, 1);
@@ -184,6 +229,36 @@ function setLastSelected(obj) {
 }
 function setCurrentSelected(obj) {
     currentSelected = obj;
+}
+
+function selectTh(id) {
+    var elem = document.getElementById(id);
+    if(elem.getAttribute(SELECTED) != SELECTED)
+        elem.setAttribute(SELECTED, SELECTED);
+    else
+        elem.setAttribute(SELECTED, NOTSELECTED);
+}
+
+function unSelectLast() {
+    if(lastSelected.num != -1) {
+        var elem = document.getElementById(HEADERTILEPARTIAL + lastSelected.num);
+        elem.setAttribute(SELECTED, NOTSELECTED);
+    }
+}
+
+function returnTileNumber(id) {
+    var partiallength = ROWTILEPARTIAL.length;
+    var num = id.slice(partiallength);
+    return num;
+}
+
+function getCoordsFromId(id, partial) {
+    var partiallength = partial.length;
+    var coords = [];
+    coords.push(id.slice(partiallength, partiallength + 1));
+    coords.push(id.slice(partiallength + 1, partiallength + 2));
+
+    return coords;
 }
 
 function checkTileUsage(tilearray) {
@@ -197,56 +272,6 @@ function checkTileUsage(tilearray) {
 }
 
 
-
-
-
-
-
-function changeTdImgSrc(partialid, coords, src) {
-    var img = document.getElementById(partialid + coords[0] + coords[1]);
-    img.setAttribute("src", src);
-}
-
-function getCoordsFromId(id, partial) {
-    var partiallength = partial.length;
-    var coords = [];
-    coords.push(id.slice(partiallength, partiallength + 1));
-    coords.push(id.slice(partiallength + 1, partiallength + 2));
-
-    return coords;
-}
-
-function getClickCoordsFromEventTarget(target) {
-    if(target.tagName.toLowerCase() == "img") {
-        return getCoordsFromId(target.parentNode.id, INITPARTIAL);
-    }
-    if(target.tagName.toLowerCase() == "td") {
-        return getCoordsFromId(target.id, INITPARTIAL);
-    }
-    return [-1, -1];
-}
-
-function modifyTh(id) {
-    var elem = document.getElementById(id);
-    if(elem.getAttribute(SELECTED) != SELECTED)
-        elem.setAttribute(SELECTED, SELECTED);
-    else
-        elem.setAttribute(SELECTED, NOTSELECTED);
-}
-
-function returnCurrentSelectedNum() {
-    for(var i = 0; i < tileContainer.length; i++) {
-        if(tileContainer[i].selected)
-            return tileContainer[i].num;
-    }
-    return -1;
-}
-
-function returnTileNumberFromContainerClick(id) {
-    var partiallength = ROWTILEPARTIAL.length;
-    var num = id.slice(partiallength);
-    return num;
-}
 
 function selectNumberFromContainer(num) {
     for(var i = 0; i < tileContainer.length; i++) {
