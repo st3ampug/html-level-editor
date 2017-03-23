@@ -41,6 +41,8 @@ function TileObj(num, coords) {
 
 function BoardObj() {
     this.grid = createArray(row, column);
+    this.maxrow = row;
+    this.maxcolumn = column;
     this.entries = 0;
     for(var i = 0; i < row; i++) {
         for(var j = 0; j < column; j++) {

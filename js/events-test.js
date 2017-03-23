@@ -1,23 +1,43 @@
 // Variables ===========================================================================
 
-const SELECTED = "selected";
-const NOTSELECTED = "no";
-const IMGPATH = "img/tiles/"
-const IMGEXTENSION = ".png";
-const CONTAINERTABLE = "containerTable";
-const INITTABLE = "initTable";
-const FINALTABLE = "finalTable";
-const HEADERTILEPARTIAL = "headerTile";
-const ROWTILEPARTIAL = "rowTile";
-const PLACEHOLDER = "placeholder";
-const INITROWPARTIAL = "initRow";
-const INITPARTIAL = "init";
-const FiNALPARTIAL = "final";
-const PICPARTIAL = "Pic";
+const SELECTED =            "selected";
+const NOTSELECTED =         "no";
+const IMGPATH =             "img/tiles/"
+const IMGEXTENSION =        ".png";
+const CONTAINERTABLE =      "containerTable";
+const INITTABLE =           "initTable";
+const FINALTABLE =          "finalTable";
+const HEADERTILEPARTIAL =   "headerTile";
+const ROWTILEPARTIAL =      "rowTile";
+const PLACEHOLDER =         "placeholder";
+const INITROWPARTIAL =      "initRow";
+const INITPARTIAL =         "init";
+const FINALPARTIAL =        "final";
+const PICPARTIAL =          "Pic";
+const SAVEJSONBUTTON =      "saveJson";
+const SAVEMODALDIV =        "saveJsonModalMainDiv";
+const VERSION =             "version";
+const BUILD =               "build";
+const LEVELID =             "levelId";
+const LEVELNAME =           "levelName";
+const LEVELDSCRIPTION =     "levelDescription";
+const LEVELMAP =            "levelMap";
 
 var containerTable = document.getElementById(CONTAINERTABLE);
 var initTable = document.getElementById(INITTABLE);
 var finalTable = document.getElementById(FINALTABLE);
+
+var saveJsonButton = document.getElementById(SAVEJSONBUTTON);  
+var saveJsonModal = document.getElementById(SAVEMODALDIV);
+
+var versionField = document.getElementById(VERSION);
+var buildField = document.getElementById(BUILD);
+var levelIdField = document.getElementById(LEVELID);
+var levelNameField = document.getElementById(LEVELNAME);
+var levelDescriptionField = document.getElementById(LEVELDSCRIPTION);
+var levelMapField = document.getElementById(LEVELMAP);
+
+
 
 // function TileObj(num, coords) {
 //     if (coords === undefined) // parameter was omitted in call
@@ -91,7 +111,7 @@ window.addEventListener('load', function(){
     });
 
     initTable.addEventListener('click', function(ev) {
-        var coords = getClickCoordsFromEventTarget(ev.target);
+        var coords = getClickCoordsFromEventTarget(ev.target, INITPARTIAL);
         console.log(coords);
 
         if(coords.length == 2) {
@@ -117,90 +137,47 @@ window.addEventListener('load', function(){
         // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
 
         
-
         console.log(INITTABLE + " click");
     });
 
     finalTable.addEventListener('click', function(ev) {
-        // TODO
+        var coords = getClickCoordsFromEventTarget(ev.target, FINALPARTIAL);
+        console.log(coords);
+
+        if(coords.length == 2) {
+            if(coords[0] != -1 && coords[1] != -1) {
+                var n = returnCurrentSelectedNum();
+                if (n != -1) {
+                    // check that the curr coords have a num
+                    if(finalBoard.grid[coords[0]][coords[1]] == -1 || typeof finalBoard.grid[coords[0]][coords[1]] == undefined) {
+                        finalBoard.remove(coords[0], coords[1]);
+                        changeTdImgSrc(FINALPARTIAL + PICPARTIAL, coords, PLACEHOLDER + IMGEXTENSION);
+                    }
+
+                    // do this when there is no num, or it has been removed
+                    finalBoard.add(coords[0], coords[1], tileContainer[n]);
+                    changeTdImgSrc(FINALPARTIAL + PICPARTIAL, coords, tileContainer[n].imgsrc);
+                }
+            }
+        }
         
+        
+        // to solve:
+        // clicking with a number selected that is already on a board, on a number that is already on the board
+        // currently, the number gets replaced by the new, but the selected number's old entry remains and the array still has the entry as well
+
 
         console.log(FINALTABLE + " click");
+    });
+
+    saveJsonButton.addEventListener('click', function(ev) {
+        saveJsonModal.innerText = JSON.stringify(constructJson(), null, 2);
     });
 });
 
 // =====================================================================================
 
 // Helpers =============================================================================
-
-function compareObjects(a1, a2) {
-    var numEquals = false;
-    var lengthEquals = false;
-    var elemsEqual = true;
-
-    if(String(a1.num) == (String(a2.num))) {
-        numEquals = true;
-    }
-    if(a1.coords.length == a2.coords.length) {
-        lengthEquals = true;
-
-        for(var i=0; i < a1.coords.length; i++) {
-            for(var j = 0; j < a2.coords.length; j++) {
-                if(!a1.coords[i].equals(a2.coords[j])) {
-                    elemsEqual = false;
-                }
-            }
-        }
-    }
-
-    if(numEquals && lengthEquals && elemsEqual)
-        return true;
-    else
-        return false;
-}
-
-// function getUsedPlace(obj, num) {
-//     if(obj.num == num) {
-//         return true;
-//     }
-//     return false;
-// }
-
-function checkAndSpliceCurrentNumFromArray(objarray, coords) {
-    for(var i = 0; i < objarray.length; i++) {
-        if(objarray[i].coords.equals(coords))
-            objarray.splice(i, 1);
-    }
-}
-
-
-
-function spliceTileFromArray(objarray, elemnum) {
-    objarray.splice(elemnum, 1);
-}
-
-function setLastSelected(obj) {
-    lastSelected = obj;
-}
-function setCurrentSelected(obj) {
-    currentSelected = obj;
-}
-
-function checkTileUsage(tilearray) {
-    for(var i = 0; i < tilearray.length; i++) {
-        //if(tilearray[i].equals(currentSelected))
-        //if(getUsedPlace(tilearray[i], currentSelected.num))
-        if(tilearray[i].num == currentSelected.num)
-            return i;
-    }
-    return -1;
-}
-
-
-
-
-
-
 
 function changeTdImgSrc(partialid, coords, src) {
     var img = document.getElementById(partialid + coords[0] + coords[1]);
@@ -216,12 +193,12 @@ function getCoordsFromId(id, partial) {
     return coords;
 }
 
-function getClickCoordsFromEventTarget(target) {
+function getClickCoordsFromEventTarget(target, partial) {
     if(target.tagName.toLowerCase() == "img") {
-        return getCoordsFromId(target.parentNode.id, INITPARTIAL);
+        return getCoordsFromId(target.parentNode.id, partial);
     }
     if(target.tagName.toLowerCase() == "td") {
-        return getCoordsFromId(target.id, INITPARTIAL);
+        return getCoordsFromId(target.id, partial);
     }
     return [-1, -1];
 }
@@ -255,6 +232,23 @@ function selectNumberFromContainer(num) {
         else
             tileContainer[i].unselect();
     }
+}
+
+function returnCoordsForNumber(gridobj, num) {
+    for(var r = 0; r < gridobj.maxrow; r++){
+        for(var c = 0; c < gridobj.maxcolumn; c++){
+            if(gridobj.grid[r][c].num == num)
+                return [r, c];
+        }
+    }
+    return [-1, -1];
+}
+
+function ensureNullForZeroNum(num) {
+    if(num == "0")
+        return null;
+    else
+        return num;
 }
 
 if(Array.prototype.equals)
@@ -292,9 +286,45 @@ function constructJson() {
     // if both arrays have length = 18 (1-19, x (=0) is for replacing 1 tile!)
     // use input values for header and info partial
     // check both arrays for numbers and the 0, use init and final array coords...
-    var output = {
+    var boxtype = "number";
 
+    var output = {
+        header: {
+            version: versionField.value,
+            build: buildField.value
+        },
+        info: {
+            id: levelIdField.value,
+            name: levelNameField.value,
+            description: levelDescriptionField.value,
+            map: levelMapField.value,
+            size: {
+                columns: 4,
+                rows: 5
+            }
+        },
+        tiles: []
     }
+
+    for(var i = 0; i < tileContainer.length; i++) {
+        var initCoords = returnCoordsForNumber(initBoard, tileContainer[i].num);
+        var finalCoords = returnCoordsForNumber(finalBoard, tileContainer[i].num);
+
+        output.tiles.push({
+            box_type: boxtype,
+            value: ensureNullForZeroNum(tileContainer[i].num),
+            init_coords: {
+                row: initCoords[0],
+                column: initCoords[1]
+            },
+            final_coords: {
+                row: finalCoords[0],
+                column: finalCoords[1]
+            }
+        });
+    }
+
+    return output;
 }
 
 // =====================================================================================
