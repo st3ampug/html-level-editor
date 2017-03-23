@@ -28,26 +28,26 @@ var finalTable = document.getElementById(FINALTABLE);
 // }
 
 var tileContainer = [
-    new NumObj("0", "img/tiles/0.png"),
-    new NumObj("1", "img/tiles/1.png"),
-    new NumObj("2", "img/tiles/2.png"),
-    new NumObj("3", "img/tiles/3.png"),
-    new NumObj("4", "img/tiles/4.png"),
-    new NumObj("5", "img/tiles/5.png"),
-    new NumObj("6", "img/tiles/6.png"),
-    new NumObj("7", "img/tiles/7.png"),
-    new NumObj("8", "img/tiles/8.png"),
-    new NumObj("9", "img/tiles/9.png"),
-    new NumObj("10", "img/tiles/10.png"),
-    new NumObj("11", "img/tiles/11.png"),
-    new NumObj("12", "img/tiles/12.png"),
-    new NumObj("13", "img/tiles/13.png"),
-    new NumObj("14", "img/tiles/14.png"),
-    new NumObj("15", "img/tiles/15.png"),
-    new NumObj("16", "img/tiles/16.png"),
-    new NumObj("17", "img/tiles/17.png"),
-    new NumObj("18", "img/tiles/18.png"),
-    new NumObj("19", "img/tiles/19.png"),
+    new NumObj("0", IMGPATH + "0" + IMGEXTENSION),
+    new NumObj("1", IMGPATH + "1" + IMGEXTENSION),
+    new NumObj("2", IMGPATH + "2" + IMGEXTENSION),
+    new NumObj("3", IMGPATH + "3" + IMGEXTENSION),
+    new NumObj("4", IMGPATH + "4" + IMGEXTENSION),
+    new NumObj("5", IMGPATH + "5" + IMGEXTENSION),
+    new NumObj("6", IMGPATH + "6" + IMGEXTENSION),
+    new NumObj("7", IMGPATH + "7" + IMGEXTENSION),
+    new NumObj("8", IMGPATH + "8" + IMGEXTENSION),
+    new NumObj("9", IMGPATH + "9" + IMGEXTENSION),
+    new NumObj("10", IMGPATH + "10" + IMGEXTENSION),
+    new NumObj("11", IMGPATH + "11" + IMGEXTENSION),
+    new NumObj("12", IMGPATH + "12" + IMGEXTENSION),
+    new NumObj("13", IMGPATH + "13" + IMGEXTENSION),
+    new NumObj("14", IMGPATH + "14" + IMGEXTENSION),
+    new NumObj("15", IMGPATH + "15" + IMGEXTENSION),
+    new NumObj("16", IMGPATH + "16" + IMGEXTENSION),
+    new NumObj("17", IMGPATH + "17" + IMGEXTENSION),
+    new NumObj("18", IMGPATH + "18" + IMGEXTENSION),
+    new NumObj("19", IMGPATH + "19" + IMGEXTENSION),
 ];
 var initBoard = new BoardObj();
 var finalBoard = new BoardObj();
@@ -99,7 +99,7 @@ window.addEventListener('load', function(){
                 var n = returnCurrentSelectedNum();
                 if (n != -1) {
                     // check that the curr coords have a num
-                    if(initBoard.grid[coords[0]][coords[1]] != -1 || initBoard.grid[coords[0]][coords[1]] != undefined) {
+                    if(initBoard.grid[coords[0]][coords[1]] == -1 || typeof initBoard.grid[coords[0]][coords[1]] == undefined) {
                         initBoard.remove(coords[0], coords[1]);
                         changeTdImgSrc(INITPARTIAL + PICPARTIAL, coords, PLACEHOLDER + IMGEXTENSION);
                     }

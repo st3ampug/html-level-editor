@@ -1,5 +1,10 @@
 // =====================================================================================
 
+    const row = 4;
+    const column = 5;
+
+// =====================================================================================
+
 function NumObj(num, imgsrc) {
     if (imgsrc === undefined) // parameter was omitted in call
         imgsrc = "img/tiles/placeholder.png";
@@ -35,25 +40,53 @@ function TileObj(num, coords) {
 // =====================================================================================
 
 function BoardObj() {
-    this.grid = createArray(4, 5);
+    this.grid = createArray(row, column);
     this.entries = 0;
-}
-BoardObj.prototype.add = function(r, c, numObj) {
-    this.grid[r][c] = numObj;
-    this.entries = this.entries + 1;
-    // entries remain 0, INVESTIGATE
-}
-BoardObj.prototype.remove = function(r, c) {
-    this.grid[r][c] = -1;
-    this.entries = this.entries - 1;
-}
-BoardObj.prototype.checkFull = function() {
-    if(this.entries == 20) {
-        return true;
-    } else {
-        return false;
+    for(var i = 0; i < row; i++) {
+        for(var j = 0; j < column; j++) {
+            this.grid[i][j] = new NumObj(-1);
+        }
     }
-};
+}
+BoardObj.prototype = {
+    add: function(r, c, numObj) {
+        this.grid[r][c] = numObj;
+        this.entries = 0;
+
+        for(var i = 0; i < row; i++) {
+            for(var j = 0; j < column; j++) {
+                if(this.grid[i][j].num != -1)
+                        this.entries++;
+            }
+        }
+    },
+    remove: function(r, c) {
+        this.grid[r][c] = -1;
+        this.entries--;
+    },
+    checkFull: function() {
+        if(this.entries == 20)
+            return true;
+        else
+            return false;
+    }
+}
+// BoardObj.prototype.add = function(r, c, numObj) {
+//     this.grid[r][c] = numObj;
+//     this.entries = this.entries + 1;
+//     // entries remain 0, INVESTIGATE
+// }
+// BoardObj.prototype.remove = function(r, c) {
+//     this.grid[r][c] = -1;
+//     this.entries = this.entries - 1;
+// }
+// BoardObj.prototype.checkFull = function() {
+//     if(this.entries == 20) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// };
 
 // =====================================================================================
 
